@@ -42,7 +42,7 @@ module MimicSsl
   module SslRequirement
     def self.included(base)
       base.class_eval do
-        def construct_uri_from_request(with_ssl)
+        def url_from_request_with_ssl(with_ssl)
           url = "http://#{request.host_with_port + request.request_uri}"
           if with_ssl
             url = URI.parse(url).query.nil? ? url + "?" : url + "&"
@@ -56,11 +56,11 @@ module MimicSsl
           return true if ssl_allowed?
 
           if ssl_required? && !request.ssl?
-            redirect_to construct_uri_from_request(with_ssl = true)
+            redirect_to url_from_request_with_ssl(true)
             flash.keep
             return false
           elsif request.ssl? && !ssl_required?
-            redirect_to construct_uri_from_request(with_ssl = false)
+            redirect_to url_from_request_with_ssl(false)
             flash.keep
             return false
           end
