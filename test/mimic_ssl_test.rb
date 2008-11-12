@@ -1,7 +1,7 @@
 ENV['MIMIC_SSL'] = "true"
 
 require File.expand_path("#{File.dirname(__FILE__)}/../lib/try_require")
-try_require \
+MimicSsl.try_require \
   'action_controller', 
   'ACTIONCONTROLLER_PATH',
   File.expand_path("#{File.dirname(__FILE__)}/../../../rails/actionpack/lib")
