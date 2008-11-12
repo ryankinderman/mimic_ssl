@@ -11,9 +11,8 @@ module MimicSsl
         protocol = options[:protocol]
         options[:protocol] = "http" if protocol == "https"
         url = rewrite_url_without_mimic_ssl(options)
-        uri = URI.parse(url)
         if protocol == "https" or (protocol.nil? and @request.ssl?)
-          url = uri.query.nil? ? url + "?" : url + "&"
+          url = URI.parse(url).query.nil? ? url + "?" : url + "&"
           url + "ssl=1"
         else
           url
@@ -45,9 +44,8 @@ module MimicSsl
       base.class_eval do
         def construct_uri_from_request(with_ssl)
           url = "http://#{request.host_with_port + request.request_uri}"
-          uri = URI.parse(url)
           if with_ssl
-            url = uri.query.nil? ? url + "?" : url + "&"
+            url = URI.parse(url).query.nil? ? url + "?" : url + "&"
             url + "ssl=1"
           else
             url.gsub(/(?:\?|&)ssl=1/, '')
